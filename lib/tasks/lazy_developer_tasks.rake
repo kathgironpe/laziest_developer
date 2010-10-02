@@ -1,7 +1,5 @@
 LAZY_DEVELOPER_VERSION="1.2.0"
 
-
-
 namespace :lazy do
   
 
