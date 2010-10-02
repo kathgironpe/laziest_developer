@@ -45,7 +45,7 @@ def write_file(filename, contents)
 end
 
 def habtm_fixtures(object)
-  path = Rails.root + "/production_data"
+  path = Rails.root.to_s + "/production_data"
   
   hatbms = object.reflect_on_all_associations.collect{|i| i if i.macro == :has_and_belongs_to_many}.compact
   h = Hash.new
@@ -80,7 +80,7 @@ namespace :db do
   task :from_yaml => :environment do
     require 'active_record/fixtures'
     ActiveRecord::Base.establish_connection(RAILS_ENV.to_sym)
-    (ENV['FIXTURES'] ? ENV['FIXTURES'].split(/,/) : Dir.glob(File.join(Rails.root, 'production_data', '*.yml'))).each do |fixture_file|
+    (ENV['FIXTURES'] ? ENV['FIXTURES'].split(/,/) : Dir.glob(File.join(Rails.root.to_s, 'production_data', '*.yml'))).each do |fixture_file|
       puts "importing #{fixture_file}"
       Fixtures.create_fixtures('production_data', File.basename(fixture_file, '.*'))
     end
@@ -128,10 +128,10 @@ namespace :db do
       end
     ################################################################################
     
-    path = Rails.root + "/production_data"
+    path = Rails.root.to_s + "/production_data"
     
     models = ENV["MODELS"].split(",").collect{ |m| m.camelize.singularize.gsub(".rb", "")} if ENV["MODELS"]
-    models ||= Dir.glob("#{Rails.root}/app/models/*.rb").collect{|c| c.gsub("#{Rails.root}/app/models/", "").gsub(".rb", "").camelize}
+    models ||= Dir.glob("#{Rails.root.to_s}/app/models/*.rb").collect{|c| c.gsub("#{Rails.root.to_s}/app/models/", "").gsub(".rb", "").camelize}
     
     start_time = Time.now
     

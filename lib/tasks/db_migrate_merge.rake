@@ -6,7 +6,7 @@ namespace :db do
     desc "Uses schema.rb to build a new base migration with the timestamp of the current migration. Other migrations are   moved to a backup folder."
     task :compact => [:abort_if_pending_migrations, :environment] do 
       
-      file = File.read("#{Rails.root}/db/schema.rb")
+      file = File.read("#{Rails.root.to_s}/db/schema.rb")
       
       main_content_regex = /ActiveRecord::Schema.define\(:version => (.*)\) do(.*)^end/m
       main_content_regex.match file
@@ -42,21 +42,21 @@ class InitialMigration < ActiveRecord::Migration
 end
 }
     version =  ActiveRecord::Migrator.current_version
-    backups = Rails.root+"/db/migrate_#{version}"
+    backups = Rails.root.to_s+"/db/migrate_#{version}"
     
-    svn=File.exist?(Rails.root+"/db/migrate/.svn")
+    svn=File.exist?(Rails.root.to_s+"/db/migrate/.svn")
     if svn
       `svn mkdir #{backups}`
-      Dir.glob(Rails.root+"/db/migrate/*").each do |migration|
+      Dir.glob(Rails.root.to_s+"/db/migrate/*").each do |migration|
         puts "moving #{migration}"
         `svn mv #{migration} #{backups}`
       end
     else
-      FileUtils.mv(Rails.root+"/db/migrate", backups)
-      FileUtils.mkdir(Rails.root+"/db/migrate")
+      FileUtils.mv(Rails.root.to_s+"/db/migrate", backups)
+      FileUtils.mkdir(Rails.root.to_s+"/db/migrate")
     end
     
-    new_file = Rails.root+"/db/migrate/#{version}_initial_migration.rb"
+    new_file = Rails.root.to_s+"/db/migrate/#{version}_initial_migration.rb"
 
     File.open(new_file, "w") do |f|
       f << new_migration
