@@ -68,7 +68,7 @@ namespace :spec do
         ["# Spec Sheet created with Lazy Specs,",
           "# A component of lazy_developer",
           "",
-          "require File.dirname(__FILE__) + '/../spec_helper'",
+          "require 'spec_helper'",
           "require '#{controller}'",
           "",
           "describe #{controller.camelize} do",
@@ -97,7 +97,7 @@ namespace :spec do
           "require '#{controller}'",
           "",
           "describe #{controller.camelize} do",
-          "  integrate_views",
+          "  render_views",
           "",
           "end"
           ]
